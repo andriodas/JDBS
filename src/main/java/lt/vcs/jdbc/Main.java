@@ -1,17 +1,34 @@
 package lt.vcs.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class Main {
 
     public static void main(String[] args) {
+
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/classicmodels", "root", "root");
+            Properties properties = new Properties();
+            FileInputStream fileInputStream = new FileInputStream("./src/main/resources/db.properties");
+
+            properties.load(fileInputStream);
+
+            String url = properties.getProperty("db.url");
+            String username = properties.getProperty("db.username");
+            String password = properties.getProperty("db.password");
+
+            Connection connection = DriverManager.getConnection(
+                    url,
+                    username,
+                    password
+            );
+
+
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from customers");
 
@@ -32,8 +49,13 @@ public class Main {
 
             connection.close();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
+
