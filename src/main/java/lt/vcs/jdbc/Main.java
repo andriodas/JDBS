@@ -12,29 +12,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        try {
-            Properties properties = new Properties();
-            FileInputStream fileInputStream = new FileInputStream("./src/main/resources/db.properties");
+        Repository repository = new Repository();
 
-            properties.load(fileInputStream);
-
-            String url = properties.getProperty("db.url");
-            String username = properties.getProperty("db.username");
-            String password = properties.getProperty("db.password");
-
-            Connection connection = DriverManager.getConnection(
-                    url,
-                    username,
-                    password
-            );
-
+        try(Connection connection = repository.getConnection()) {
 
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from customers");
 
             List<Customer> customers = new ArrayList<>();
 
-            while (((ResultSet) resultSet).next()) {
+            while (resultSet.next()) {
                 // System.out.println(resultSet.getInt(1) + " | " + resultSet.getString(2));
                 Customer customer = new Customer(
                         resultSet.getInt("customerNumber"),
@@ -44,16 +31,9 @@ public class Main {
 
                 customers.add(customer);
             }
-
             customers.forEach(System.out::println);
 
-            connection.close();
-
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
