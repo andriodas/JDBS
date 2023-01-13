@@ -12,7 +12,7 @@ public class Repository {
     private String url;
     private String username;
     private String password;
-    private Connection connection;
+    private static Connection connection;
 
     public Connection getConnection() throws SQLException {
 
@@ -46,6 +46,11 @@ public class Repository {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    public static void closeConnection() throws SQLException {
+        if (connection != null) {
+            connection.close();
         }
     }
 }
