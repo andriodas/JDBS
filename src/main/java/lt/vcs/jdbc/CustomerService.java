@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
-    Repository repository = new Repository();
 
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
         try {
-            Statement statement = repository.getConnection().createStatement();
+            Statement statement = Repository.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("select * from customers");
 
             while (resultSet.next()) {
@@ -37,7 +36,7 @@ public class CustomerService {
                 "phone, addressLine1, city, country)VALUES(?,?,?,?,?,?,?,?)";
 
         try {
-            PreparedStatement preparedStatement = repository.getConnection().prepareStatement(sql);
+            PreparedStatement preparedStatement = Repository.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, customer.getCustomerNumber());
             preparedStatement.setString(2, customer.getCustomerName());
             preparedStatement.setString(3, customer.getContactLastName());
@@ -48,7 +47,6 @@ public class CustomerService {
             preparedStatement.setString(8, customer.getCountry());
 
             preparedStatement.executeUpdate();
-            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

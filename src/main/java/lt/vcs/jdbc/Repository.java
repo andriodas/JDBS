@@ -9,12 +9,12 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Repository {
-    private String url;
-    private String username;
-    private String password;
+    private static String url;
+    private static String username;
+    private static String password;
     private static Connection connection;
 
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
 
         if (connection == null) {
 
@@ -29,7 +29,7 @@ public class Repository {
         return connection;
     }
 
-    private void getProperties() {
+    private static void getProperties() {
         Properties properties = new Properties();
 
         try (

@@ -32,11 +32,11 @@ public class Main {
 
         customers = customerService.getAllCustomers();
         customers.forEach(System.out::println);
-//        try {
-//            Repository.closeConnection();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Repository.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductLineService {
-    Repository repository = new Repository();
 
     public List<ProductLine> getProductLines(){
 
         List<ProductLine> productLines = new ArrayList<>();
-        try(Connection connection = repository.getConnection()) {
+        try {
 
-            Statement statement = connection.createStatement();
+            Statement statement = Repository.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("select * from productLines");
 
             while (resultSet.next()) {
@@ -27,7 +26,6 @@ public class ProductLineService {
 
                 productLines.add(productLine);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
